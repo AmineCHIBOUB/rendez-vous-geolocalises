@@ -1,0 +1,13 @@
+GeoRDV - Version 3
+
+Ajouts effectués :
+- possibilité de fixer un lieu de rendez-vous différent de la position actuelle ;
+- ajout de deux champs simples : latitude et longitude ;
+- si ces champs sont remplis, l'invitation SMS est envoyée avec ce lieu choisi ;
+- sinon, l'application utilise la position GPS actuelle comme en v1 ;
+- le bouton carte affiche soit le lieu saisi, soit la position actuelle.
+
+Choix retenu :
+- solution volontairement simple, avec EditText + validation + réutilisation du format RDV_INVITE:latitude,longitude ;
+- pas d'ajout de bibliothèque externe ;
+- code facile à expliquer devant le prof.

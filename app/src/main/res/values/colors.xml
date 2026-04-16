@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bleu_principal">#3F51B5</color>
+    <color name="fond_clair">#F5F5F5</color>
+    <color name="gris_separateur">#CCCCCC</color>
+    <color name="gris_texte">#666666</color>
+    <color name="vert_accepter">#4CAF50</color>
+    <color name="rouge_refuser">#F44336</color>
+</resources>

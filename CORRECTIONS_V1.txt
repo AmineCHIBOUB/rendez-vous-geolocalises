@@ -1,0 +1,23 @@
+GeoRDV - version V1 finale
+
+Corrections apportées :
+1. gestion de plusieurs destinataires séparés par ;
+2. ajout d'un contact sans écraser les numéros déjà saisis
+3. validation simple des numéros (au moins 4 chiffres)
+4. vérification des permissions Android utiles
+5. code simplifié et commenté
+6. traitement plus propre des SMS reçus
+7. projet nettoyé pour le rendu
+
+Rappel du fonctionnement :
+- saisir un ou plusieurs numéros
+- ou ajouter un contact
+- envoyer l'invitation GPS
+- le destinataire accepte ou refuse
+- l'initiateur reçoit la réponse
+
+
+AJOUT V2 :
+- bouton pour afficher la position actuelle sur une carte
+- bouton pour afficher le rendez-vous reçu sur une carte
+- implementation avec Intent.ACTION_VIEW + URI geo:, conforme au cours sur les Intents

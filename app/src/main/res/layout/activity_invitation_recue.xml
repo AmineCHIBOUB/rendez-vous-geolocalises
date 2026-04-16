@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Invitation reçue"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="32dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vous avez reçu une invitation à un rendez-vous :"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/textExpediteur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Invitation de : ..."
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/textCoordonnees"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Coordonnées GPS : ..."
+        android:textSize="15sp"
+        android:padding="12dp"
+        android:layout_marginBottom="32dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Afficher le rendez-vous sur la carte"
+        android:onClick="afficherCarte"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Accepter le rendez-vous"
+        android:onClick="accepterInvitation"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Refuser le rendez-vous"
+        android:onClick="refuserInvitation" />
+
+</LinearLayout>
