@@ -11,20 +11,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v5
 
-      - name: Tests unitaires
-        run: ./gradlew test
+      - name: Tests unitaires et compilation de l'APK
+        run: |
+          set -o pipefail
+          ./gradlew test assembleDebug --console=plain 2>&1 | tee build.log
 
-      - name: Compilation de l'APK
-        run: ./gradlew assembleDebug
+      # en cas d'échec, les erreurs sont affichées en annotations sur la page du build
+      - name: Résumé des erreurs
+        if: failure()
+        run: |
+          grep -E "error:|FAILED|What went wrong|> .*" build.log | head -20 | while IFS= read -r ligne; do
+            echo "::error::$ligne"
+          done
 
       - uses: actions/upload-artifact@v4
         with:
