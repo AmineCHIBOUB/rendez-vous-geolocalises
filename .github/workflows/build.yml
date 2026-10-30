@@ -29,7 +29,7 @@ jobs:
       - name: Résumé des erreurs
         if: failure()
         run: |
-          grep -E "error:|FAILED|What went wrong|> .*" build.log | head -20 | while IFS= read -r ligne; do
+          { grep -E ".java:[0-9]+: error:|^e: |FAILED" build.log; grep -A8 "What went wrong" build.log; } | grep -v "^> Task" | head -30 | while IFS= read -r ligne; do
             echo "::error::$ligne"
           done
 
