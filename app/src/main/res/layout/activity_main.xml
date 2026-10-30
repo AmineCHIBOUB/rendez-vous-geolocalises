@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fond_clair">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,18 +13,60 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="GeoRDV"
+            android:text="Nouveau rendez-vous"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="24dp" />
+            android:textColor="@color/bleu_principal"
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Numéro(s) de téléphone :"
-            android:textSize="14sp"
-            android:layout_marginBottom="4dp" />
+            android:text="Invitez vos contacts à vous retrouver, par SMS."
+            android:textColor="@color/gris_texte"
+            android:layout_marginBottom="20dp" />
+
+        <!-- ===== QUOI ET QUAND ===== -->
+        <TextView
+            style="@style/Titre.Section"
+            android:text="Quoi et quand" />
+
+        <EditText
+            android:id="@+id/editTitre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Titre (ex : Café, Réunion projet…)"
+            android:inputType="textCapSentences"
+            android:maxLength="60"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/boutonDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📅 Date"
+                android:onClick="choisirDate" />
+
+            <Button
+                android:id="@+id/boutonHeure"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🕒 Heure"
+                android:onClick="choisirHeure" />
+        </LinearLayout>
+
+        <!-- ===== QUI ===== -->
+        <TextView
+            style="@style/Titre.Section"
+            android:text="Qui" />
 
         <EditText
             android:id="@+id/editNumero"
@@ -31,72 +74,82 @@
             android:layout_height="wrap_content"
             android:hint="Ex : 0601020304;0611223344"
             android:inputType="phone"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Séparez plusieurs numéros par un point-virgule ;"
             android:textSize="12sp"
-            android:layout_marginBottom="16dp" />
+            android:textColor="@color/gris_texte"
+            android:layout_marginBottom="8dp" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choisir / ajouter un contact"
+            android:text="👤 Ajouter un contact"
             android:onClick="choisirContact"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="20dp" />
+
+        <!-- ===== OÙ ===== -->
+        <TextView
+            style="@style/Titre.Section"
+            android:text="Où (facultatif)" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editLatitude"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Latitude"
+                android:inputType="numberDecimal|numberSigned" />
+
+            <EditText
+                android:id="@+id/editLongitude"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Longitude"
+                android:inputType="numberDecimal|numberSigned" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Version 3 : lieu du rendez-vous (facultatif)"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/editLatitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Latitude du rendez-vous"
-            android:inputType="numberDecimal|numberSigned"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/editLongitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Longitude du rendez-vous"
-            android:inputType="numberDecimal|numberSigned"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Laissez ces champs vides pour utiliser votre position GPS actuelle."
+            android:text="Laissez vide pour utiliser votre position GPS actuelle."
             android:textSize="12sp"
-            android:layout_marginBottom="16dp" />
+            android:textColor="@color/gris_texte"
+            android:layout_marginBottom="8dp" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Envoyer une invitation GPS"
-            android:onClick="envoyerInvitation"
-            android:layout_marginBottom="12dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Afficher le lieu du rendez-vous sur la carte"
+            android:text="🗺 Voir le lieu sur la carte"
             android:onClick="afficherPositionSurCarte"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="20dp" />
 
-        <TextView
+        <!-- ===== ACTIONS ===== -->
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Statut :"
+            android:text="Envoyer l'invitation"
             android:textStyle="bold"
-            android:layout_marginBottom="4dp" />
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/bleu_principal"
+            android:onClick="envoyerInvitation"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📋 Mes rendez-vous"
+            android:onClick="ouvrirHistorique"
+            android:layout_marginBottom="20dp" />
 
         <TextView
             android:id="@+id/textStatut"
@@ -104,6 +157,7 @@
             android:layout_height="wrap_content"
             android:text="En attente du GPS..."
             android:textSize="13sp"
+            android:textColor="@color/gris_texte"
             android:padding="8dp" />
 
     </LinearLayout>

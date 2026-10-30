@@ -2,104 +2,130 @@ package fr.enseirb.geordv;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fr.enseirb.geordv.data.RdvDatabase;
+import fr.enseirb.geordv.model.MessageRdv;
+import fr.enseirb.geordv.model.RendezVous;
+import fr.enseirb.geordv.model.Trajet;
+import fr.enseirb.geordv.util.Cartes;
+import fr.enseirb.geordv.util.Contacts;
+import fr.enseirb.geordv.util.Format;
+import fr.enseirb.geordv.util.Rappels;
+import fr.enseirb.geordv.util.Sms;
+
 /**
- * Activité affichée lorsqu'une invitation GeoRDV est reçue.
+ * Invitation reçue : détails, distance, itinéraire et réponse.
  */
 public class InvitationRecueActivity extends Activity {
 
-    private String numeroExpediteur;
-    private String coordonnees;
-    private TextView textExpediteur;
-    private TextView textCoordonnees;
+    public static final String EXTRA_ID_RDV = "id_rdv";
+
+    private RendezVous rdv;
+    private EditText editMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invitation_recue);
+        editMessage = findViewById(R.id.editMessage);
 
-        textExpediteur = (TextView) findViewById(R.id.textExpediteur);
-        textCoordonnees = (TextView) findViewById(R.id.textCoordonnees);
-
-        numeroExpediteur = getIntent().getStringExtra("expediteur");
-        coordonnees = getIntent().getStringExtra("coordonnees");
-
-        if (numeroExpediteur == null) {
-            numeroExpediteur = "inconnu";
+        String idRdv = getIntent().getStringExtra(EXTRA_ID_RDV);
+        rdv = idRdv == null ? null : RdvDatabase.get(this).trouver(idRdv);
+        if (rdv == null) {
+            Toast.makeText(this, "Invitation introuvable", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
-        if (coordonnees == null) {
-            coordonnees = "non disponibles";
-        }
-
-        textExpediteur.setText("Invitation de : " + numeroExpediteur);
-        textCoordonnees.setText("Coordonnées GPS : " + coordonnees);
+        afficher();
     }
 
+    private void afficher() {
+        ((TextView) findViewById(R.id.textExpediteur)).setText("Invitation de " + Contacts.nom(this, rdv.getContact()));
+        ((TextView) findViewById(R.id.textTitre)).setText(Format.titre(rdv));
+        ((TextView) findViewById(R.id.textDate)).setText("📅 " + Format.date(rdv.getDateHeure()));
+        ((TextView) findViewById(R.id.textCoordonnees)).setText("📍 " + rdv.getCoordonnees());
+        ((TextView) findViewById(R.id.textDistance)).setText(texteDistance());
 
-    /**
-     * Version v2 : affichage du rendez-vous sur une carte,
-     * en utilisant un Intent ACTION_VIEW avec une URI geo:.
-     * C'est la solution la plus proche du cours.
-     */
-    public void afficherCarte(View vue) {
-        if (coordonnees == null) {
-            Toast.makeText(this, "Coordonnées indisponibles", Toast.LENGTH_SHORT).show();
-            return;
+        // si on a déjà répondu, on affiche la réponse à la place des boutons
+        boolean dejaRepondu = !RendezVous.STATUT_EN_ATTENTE.equals(rdv.getStatut());
+        TextView textStatut = findViewById(R.id.textStatut);
+        textStatut.setVisibility(dejaRepondu ? View.VISIBLE : View.GONE);
+        textStatut.setText(Format.statut(rdv.getStatut()));
+        findViewById(R.id.blocReponse).setVisibility(dejaRepondu ? View.GONE : View.VISIBLE);
+    }
+
+    /** Distance et temps de marche depuis la dernière position connue. */
+    private String texteDistance() {
+        Location position = dernierePositionConnue();
+        if (position == null) {
+            return "🚶 Distance inconnue (position non disponible)";
         }
+        double distance = Trajet.distanceMetres(position.getLatitude(), position.getLongitude(),
+                rdv.getLatitude(), rdv.getLongitude());
+        return "🚶 À " + Trajet.formaterDistance(distance) + ", environ "
+                + Trajet.minutesAPied(distance) + " min à pied";
+    }
 
-        String[] morceaux = coordonnees.split(",");
-        if (morceaux.length != 2) {
-            Toast.makeText(this, "Coordonnées invalides", Toast.LENGTH_SHORT).show();
-            return;
+    private Location dernierePositionConnue() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return null;
         }
-
-        String latitude = morceaux[0].trim();
-        String longitude = morceaux[1].trim();
-        Uri position = Uri.parse("geo:" + latitude + "," + longitude);
-
-        Intent intentCarte = new Intent(Intent.ACTION_VIEW);
-        intentCarte.setData(position);
-
+        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (manager == null) {
+            return null;
+        }
         try {
-            startActivity(intentCarte);
-        } catch (Exception e) {
-            Toast.makeText(this, "Aucune application de carte disponible", Toast.LENGTH_SHORT).show();
+            Location gps = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            return gps != null ? gps : manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        } catch (SecurityException e) {
+            return null;
         }
+    }
+
+    public void afficherCarte(View vue) {
+        Cartes.afficher(this, rdv);
+    }
+
+    public void lancerItineraire(View vue) {
+        Cartes.itineraire(this, rdv);
     }
 
     public void accepterInvitation(View vue) {
-        envoyerReponse("RDV_REPONSE:ACCEPTE", "Rendez-vous accepté !");
+        repondre(RendezVous.STATUT_ACCEPTE, "Rendez-vous accepté !");
     }
 
     public void refuserInvitation(View vue) {
-        envoyerReponse("RDV_REPONSE:REFUSE", "Rendez-vous refusé.");
+        repondre(RendezVous.STATUT_REFUSE, "Rendez-vous refusé.");
     }
 
-    private void envoyerReponse(String message, String confirmation) {
-        if (!permissionSmsAccordee()) {
+    private void repondre(String statut, String confirmation) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "Permission SMS refusée", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(numeroExpediteur, null, message, null, null);
-        Toast.makeText(this, confirmation, Toast.LENGTH_SHORT).show();
-        finish();
-    }
+        String message = editMessage.getText().toString().trim();
+        Sms.envoyer(rdv.getContact(), MessageRdv.reponse(rdv.getId(), statut, message));
 
-    private boolean permissionSmsAccordee() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
+        RdvDatabase.get(this).changerStatut(rdv.getId(), statut);
+        rdv.setStatut(statut);
+        if (RendezVous.STATUT_ACCEPTE.equals(statut)) {
+            Rappels.programmer(this, rdv);
         }
-        return checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
+
+        Toast.makeText(this, confirmation, Toast.LENGTH_SHORT).show();
+        afficher();
     }
 }

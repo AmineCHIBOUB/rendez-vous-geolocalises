@@ -1,64 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:background="@color/fond_clair">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Invitation reçue"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="32dp" />
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Vous avez reçu une invitation à un rendez-vous :"
-        android:textSize="14sp"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:id="@+id/textExpediteur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Invitation de …"
+            android:textColor="@color/gris_texte"
+            android:layout_marginBottom="4dp" />
 
-    <TextView
-        android:id="@+id/textExpediteur"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Invitation de : ..."
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:padding="12dp"
-        android:layout_marginBottom="12dp" />
+        <TextView
+            android:id="@+id/textTitre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rendez-vous"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/bleu_principal"
+            android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:id="@+id/textCoordonnees"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Coordonnées GPS : ..."
-        android:textSize="15sp"
-        android:padding="12dp"
-        android:layout_marginBottom="32dp" />
+        <TextView
+            android:id="@+id/textDate"
+            style="@style/Ligne.Info"
+            android:text="📅 Date non précisée" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Afficher le rendez-vous sur la carte"
-        android:onClick="afficherCarte"
-        android:layout_marginBottom="12dp" />
+        <TextView
+            android:id="@+id/textDistance"
+            style="@style/Ligne.Info"
+            android:text="🚶 Distance en cours de calcul…" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Accepter le rendez-vous"
-        android:onClick="accepterInvitation"
-        android:layout_marginBottom="12dp" />
+        <TextView
+            android:id="@+id/textCoordonnees"
+            style="@style/Ligne.Info"
+            android:textSize="12sp"
+            android:textColor="@color/gris_texte"
+            android:text="📍 …" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Refuser le rendez-vous"
-        android:onClick="refuserInvitation" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp">
 
-</LinearLayout>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🗺 Carte"
+                android:onClick="afficherCarte" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🧭 Itinéraire"
+                android:onClick="lancerItineraire" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textStatut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:id="@+id/blocReponse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Titre.Section"
+                android:text="Votre réponse" />
+
+            <EditText
+                android:id="@+id/editMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Message facultatif (ex : J'arrive dans 10 min)"
+                android:inputType="textCapSentences"
+                android:maxLength="80"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="✅ Accepter"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/vert_accepter"
+                android:onClick="accepterInvitation"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="❌ Refuser"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/rouge_refuser"
+                android:onClick="refuserInvitation" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

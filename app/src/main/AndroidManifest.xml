@@ -3,10 +3,19 @@
 
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- Android 13+ : afficher les notifications d'invitation et de rappel -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Android 11+ : vérifier qu'une application de navigation est installée -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="google.navigation" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -25,17 +34,36 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".InvitationRecueActivity" />
-        <activity android:name=".ReponseActivity" />
+        <activity
+            android:name=".InvitationRecueActivity"
+            android:label="Invitation reçue"
+            android:parentActivityName=".HistoriqueActivity" />
 
+        <activity
+            android:name=".HistoriqueActivity"
+            android:label="Mes rendez-vous"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".DetailRdvActivity"
+            android:label="Rendez-vous"
+            android:parentActivityName=".HistoriqueActivity" />
+
+        <!-- Réception des SMS GeoRDV ; seul le système peut l'appeler (permission BROADCAST_SMS) -->
         <receiver
             android:name=".SmsReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
             <intent-filter android:priority="999">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
+        <!-- Rappel 30 minutes avant un rendez-vous -->
+        <receiver
+            android:name=".RappelReceiver"
+            android:exported="false" />
 
     </application>
 </manifest>

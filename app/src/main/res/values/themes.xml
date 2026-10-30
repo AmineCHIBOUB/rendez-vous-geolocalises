@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.GeoRDV" parent="android:Theme.Holo.Light">
+    <!-- Thème Material intégré à Android (API 21+), sans bibliothèque externe -->
+    <style name="Theme.GeoRDV" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/bleu_principal</item>
+        <item name="android:colorPrimaryDark">@color/bleu_fonce</item>
+        <item name="android:colorAccent">@color/bleu_principal</item>
+    </style>
+
+    <!-- Titre de section dans les formulaires -->
+    <style name="Titre.Section">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/bleu_principal</item>
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
+    <!-- Ligne d'information (date, distance, lieu) -->
+    <style name="Ligne.Info">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginBottom">8dp</item>
     </style>
 </resources>

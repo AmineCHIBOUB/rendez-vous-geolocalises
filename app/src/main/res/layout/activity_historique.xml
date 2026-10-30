@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/fond_clair"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mes rendez-vous"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/bleu_principal"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/textResume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gris_texte"
+        android:layout_marginBottom="12dp" />
+
+    <ListView
+        android:id="@+id/listeRdv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/gris_separateur"
+        android:dividerHeight="1dp" />
+
+    <TextView
+        android:id="@+id/textVide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aucun rendez-vous pour le moment.\nEnvoyez votre première invitation depuis l'écran d'accueil."
+        android:textColor="@color/gris_texte"
+        android:gravity="center"
+        android:padding="32dp" />
+
+</LinearLayout>
