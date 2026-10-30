@@ -28,7 +28,7 @@
 
         <!-- ===== QUOI ET QUAND ===== -->
         <TextView
-            style="@style/Titre.Section"
+            style="@style/TitreSection"
             android:text="Quoi et quand" />
 
         <EditText
@@ -65,7 +65,7 @@
 
         <!-- ===== QUI ===== -->
         <TextView
-            style="@style/Titre.Section"
+            style="@style/TitreSection"
             android:text="Qui" />
 
         <EditText
@@ -93,7 +93,7 @@
 
         <!-- ===== OÙ ===== -->
         <TextView
-            style="@style/Titre.Section"
+            style="@style/TitreSection"
             android:text="Où (facultatif)" />
 
         <LinearLayout

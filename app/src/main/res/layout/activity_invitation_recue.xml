@@ -30,17 +30,17 @@
 
         <TextView
             android:id="@+id/textDate"
-            style="@style/Ligne.Info"
+            style="@style/LigneInfo"
             android:text="📅 Date non précisée" />
 
         <TextView
             android:id="@+id/textDistance"
-            style="@style/Ligne.Info"
+            style="@style/LigneInfo"
             android:text="🚶 Distance en cours de calcul…" />
 
         <TextView
             android:id="@+id/textCoordonnees"
-            style="@style/Ligne.Info"
+            style="@style/LigneInfo"
             android:textSize="12sp"
             android:textColor="@color/gris_texte"
             android:text="📍 …" />
@@ -83,7 +83,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/Titre.Section"
+                style="@style/TitreSection"
                 android:text="Votre réponse" />
 
             <EditText

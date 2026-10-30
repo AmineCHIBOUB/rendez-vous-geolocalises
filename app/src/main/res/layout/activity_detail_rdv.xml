@@ -28,16 +28,16 @@
 
         <TextView
             android:id="@+id/textDate"
-            style="@style/Ligne.Info" />
+            style="@style/LigneInfo" />
 
         <TextView
             android:id="@+id/textStatut"
-            style="@style/Ligne.Info"
+            style="@style/LigneInfo"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/titreParticipants"
-            style="@style/Titre.Section"
+            style="@style/TitreSection"
             android:layout_marginTop="12dp"
             android:text="Réponses des invités" />
 
